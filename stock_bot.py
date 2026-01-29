@@ -16,7 +16,7 @@ STOCKS = [
 ]
 
 DROP_LIMIT = -5.0            # alert if down 1% or more
-CHECK_EVERY_SECONDS = 300     # check every 30 seconds
+CHECK_EVERY_SECONDS = 30     # check every 30 seconds
 # ==================
 
 bot = Bot(token=BOT_TOKEN)
