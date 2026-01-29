@@ -15,14 +15,17 @@ STOCKS = [
     "GOOGL", "UBER", "MELI", "TSM", "SIX2.DE", "AMZN", "PG"
 ]
 
-DROP_LIMIT = -5.0            # alert if down 1% or more
-CHECK_EVERY_SECONDS = 30     # check every 30 seconds
+DROP_LIMIT = -5.0            # alert if down 5% or more
+CHECK_EVERY_SECONDS = 30
 # ==================
 
 bot = Bot(token=BOT_TOKEN)
 alerted_today = set()
 
 async def check_stocks():
+    alert_sent_in_run = False
+    alert_time = time.strftime("%H:%M")
+
     for symbol in STOCKS:
         try:
             data = yf.Ticker(symbol).history(period="1d")
@@ -34,7 +37,14 @@ async def check_stocks():
             change_pct = (current_price - open_price) / open_price * 100
 
             if change_pct <= DROP_LIMIT and symbol not in alerted_today:
-                alert_time = time.strftime("%H:%M")
+
+                # delimiter – only once per run
+                if not alert_sent_in_run:
+                    await bot.send_message(
+                        chat_id=CHAT_ID,
+                        text=f"────────── Update {alert_time} ──────────"
+                    )
+                    alert_sent_in_run = True
 
                 await bot.send_message(
                     chat_id=CHAT_ID,
@@ -44,6 +54,7 @@ async def check_stocks():
                         f"Time: {alert_time}"
                     )
                 )
+
                 alerted_today.add(symbol)
 
         except Exception as e:
@@ -59,9 +70,3 @@ if __name__ == "__main__":
     while True:
         today = time.strftime("%Y-%m-%d")
 
-        if today != last_reset_day:
-            reset_daily_alerts()
-            last_reset_day = today
-
-        asyncio.run(check_stocks())
-        time.sleep(CHECK_EVERY_SECONDS)
