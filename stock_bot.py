@@ -1,4 +1,5 @@
 import time
+import asyncio
 import yfinance as yf
 from telegram import Bot
 
@@ -11,17 +12,17 @@ STOCKS = [
     "TSLA", "NU", "PYPL", "AAPL", "SCCO", "MSFT", "PDD", "SOFI",
     "MCHI", "LLY", "VST", "NVO", "BRK-B", "META", "ORCL", "RKLB",
     "NVDA", "GRAB", "LYFT", "AMD", "AVGO", "TTD", "NFLX",
-    "GOOGL", "UBER", "MELI", "TSM", "SIX", "AMZN", "PG"
+    "GOOGL", "UBER", "MELI", "TSM", "SIX2.DE", "AMZN", "PG"
 ]
 
-DROP_LIMIT = -1.0
-CHECK_EVERY_SECONDS = 30
+DROP_LIMIT = -1.0            # alert if down 1% or more
+CHECK_EVERY_SECONDS = 30     # check every 30 seconds
 # ==================
 
 bot = Bot(token=BOT_TOKEN)
 alerted_today = set()
 
-def check_stocks():
+async def check_stocks():
     for symbol in STOCKS:
         try:
             data = yf.Ticker(symbol).history(period="1d")
@@ -33,12 +34,12 @@ def check_stocks():
             change_pct = (current_price - open_price) / open_price * 100
 
             if change_pct <= DROP_LIMIT and symbol not in alerted_today:
-                bot.send_message(
+                await bot.send_message(
                     chat_id=CHAT_ID,
                     text=(
                         f"🚨 {symbol} ALERT\n"
                         f"Down: {change_pct:.2f}% today\n"
-                        f"Price: ${current_price:.2f}"
+                        f"Price: {current_price:.2f}"
                     )
                 )
                 alerted_today.add(symbol)
@@ -60,5 +61,5 @@ if __name__ == "__main__":
             reset_daily_alerts()
             last_reset_day = today
 
-        check_stocks()
+        asyncio.run(check_stocks())
         time.sleep(CHECK_EVERY_SECONDS)
