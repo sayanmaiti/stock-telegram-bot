@@ -63,8 +63,8 @@ def check_stocks():
             if data.empty:
                 continue
 
-            open_price = data["Open"][0]
-            current_price = data["Close"][-1]
+           open_price = data["Open"].iloc[0]
+           current_price = data["Close"].iloc[-1]
             change_pct = (current_price - open_price) / open_price * 100
 
             key = f"{symbol}"
