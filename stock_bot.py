@@ -15,7 +15,7 @@ STOCKS = [
     "GOOGL", "UBER", "MELI", "TSM", "SIX2.DE", "AMZN", "PG"
 ]
 
-DROP_LIMIT = -5.0            # alert if down 1% or more
+DROP_LIMIT = -2.0            # alert if down 2% or more
 CHECK_EVERY_SECONDS = 60
 # ==================
 
