@@ -15,8 +15,8 @@ STOCKS = [
     "GOOGL", "UBER", "MELI", "TSM", "SIX2.DE", "AMZN", "PG"
 ]
 
-DROP_LIMIT = -1.0            # alert if down 1% or more
-CHECK_EVERY_SECONDS = 30     # check every 30 seconds
+DROP_LIMIT = -5.0            # alert if down 1% or more
+CHECK_EVERY_SECONDS = 300     # check every 30 seconds
 # ==================
 
 bot = Bot(token=BOT_TOKEN)
