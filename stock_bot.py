@@ -8,7 +8,7 @@ BOT_TOKEN = "7563850022:AAFS1vmFNcE6Eeqd93I9zA1t6z59DmBJOfY"
 CHAT_ID = "6654008816"
 
 STOCKS = [
-    "PLTR", "LMT", "BAESY", "DRS", "SNAP", "ASML", "IOSGY", "UPS",
+    "PLTR", "LMT", "BAESY", "DRS", "SNAP", "ASML", "IONOS.DE", "UPS",
     "TSLA", "NU", "PYPL", "AAPL", "SCCO", "MSFT", "PDD", "SOFI",
     "MCHI", "LLY", "VST", "NVO", "BRK-B", "META", "ORCL", "RKLB",
     "NVDA", "GRAB", "LYFT", "AMD", "AVGO", "TTD", "NFLX",
@@ -34,12 +34,14 @@ async def check_stocks():
             change_pct = (current_price - open_price) / open_price * 100
 
             if change_pct <= DROP_LIMIT and symbol not in alerted_today:
+                alert_time = time.strftime("%H:%M")
+
                 await bot.send_message(
                     chat_id=CHAT_ID,
                     text=(
-                        f"🚨 {symbol} ALERT\n"
-                        f"Down: {change_pct:.2f}% today\n"
-                        f"Price: {current_price:.2f}"
+                        f"🚨 {symbol} down {change_pct:.2f}%\n"
+                        f"Price: {open_price:.2f} → {current_price:.2f}\n"
+                        f"Time: {alert_time}"
                     )
                 )
                 alerted_today.add(symbol)
