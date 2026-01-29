@@ -15,12 +15,14 @@ STOCKS = [
     "GOOGL", "UBER", "MELI", "TSM", "SIX2.DE", "AMZN", "PG"
 ]
 
-DROP_LIMIT = -2.0            # alert if down 1% or more
-CHECK_EVERY_SECONDS = 60
+ALERT_STEPS = [-2, -4, -6, -8, -10]   # progressive drop levels (%)
+CHECK_EVERY_SECONDS = 30
 # ==================
 
 bot = Bot(token=BOT_TOKEN)
-alerted_today = set()
+
+# symbol -> deepest step already alerted today
+alerted_today = {}
 
 async def check_stocks():
     alert_sent_in_run = False
@@ -33,34 +35,35 @@ async def check_stocks():
             if data.empty:
                 continue
 
-            # prices
             open_price = data["Open"].iloc[0]
             current_price = data["Close"].iloc[-1]
             change_pct = (current_price - open_price) / open_price * 100
 
-            # company name (fallback to ticker)
             company_name = ticker.info.get("shortName", symbol)
+            last_step = alerted_today.get(symbol, 0)
 
-            if change_pct <= DROP_LIMIT and symbol not in alerted_today:
+            for step in ALERT_STEPS:
+                if change_pct <= step and last_step > step:
 
-                # delimiter – only once per run
-                if not alert_sent_in_run:
+                    if not alert_sent_in_run:
+                        await bot.send_message(
+                            chat_id=CHAT_ID,
+                            text=f"────────── Update {alert_time} ──────────"
+                        )
+                        alert_sent_in_run = True
+
                     await bot.send_message(
                         chat_id=CHAT_ID,
-                        text=f"────────── Update {alert_time} ──────────"
+                        text=(
+                            f"🚨 {company_name} down {change_pct:.2f}%\n"
+                            f"Crossed: {step}%\n"
+                            f"Price: {open_price:.2f} → {current_price:.2f}\n"
+                            f"Time: {alert_time}"
+                        )
                     )
-                    alert_sent_in_run = True
 
-                await bot.send_message(
-                    chat_id=CHAT_ID,
-                    text=(
-                        f"🚨 {company_name} down {change_pct:.2f}%\n"
-                        f"Price: {open_price:.2f} → {current_price:.2f}\n"
-                        f"Time: {alert_time}"
-                    )
-                )
-
-                alerted_today.add(symbol)
+                    alerted_today[symbol] = step
+                    break
 
         except Exception as e:
             print(f"Error with {symbol}: {e}")
