@@ -15,7 +15,7 @@ STOCKS = [
     "GOOGL", "UBER", "MELI", "TSM", "SIX2.DE", "AMZN", "PG"
 ]
 
-DROP_LIMIT = -1.0            # alert if down 5% or more
+DROP_LIMIT = -1.0            # alert if down 1% or more
 CHECK_EVERY_SECONDS = 30
 # ==================
 
@@ -70,3 +70,9 @@ if __name__ == "__main__":
     while True:
         today = time.strftime("%Y-%m-%d")
 
+        if today != last_reset_day:
+            reset_daily_alerts()
+            last_reset_day = today
+
+        asyncio.run(check_stocks())
+        time.sleep(CHECK_EVERY_SECONDS)
