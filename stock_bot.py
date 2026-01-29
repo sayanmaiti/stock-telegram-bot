@@ -8,7 +8,7 @@ BOT_TOKEN = "7563850022:AAFS1vmFNcE6Eeqd93I9zA1t6z59DmBJOfY"
 CHAT_ID = "6654008816"
 
 STOCKS = [
-    "PLTR", "LMT", "BAESY", "DRS", "SNAP", "ASML", "IONOS.DE", "UPS",
+    "PLTR", "LMT", "BAESY", "DRS", "SNAP", "ASML", "ION3.DE", "UPS",
     "TSLA", "NU", "PYPL", "AAPL", "SCCO", "MSFT", "PDD", "SOFI",
     "MCHI", "LLY", "VST", "NVO", "BRK-B", "META", "ORCL", "RKLB",
     "NVDA", "GRAB", "LYFT", "AMD", "AVGO", "TTD", "NFLX",
