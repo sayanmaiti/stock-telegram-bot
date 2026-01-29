@@ -15,13 +15,13 @@ STOCKS = [
     "GOOGL", "UBER", "MELI", "TSM", "SIX2.DE", "AMZN", "PG"
 ]
 
-ALERT_STEPS = [-2, -4, -6, -8, -10]   # progressive drop levels (%)
+ALERT_STEPS = [-2, -4, -6, -8, -10]
 CHECK_EVERY_SECONDS = 30
 # ==================
 
 bot = Bot(token=BOT_TOKEN)
 
-# symbol -> deepest step already alerted today
+# symbol -> deepest step alerted today
 alerted_today = {}
 
 async def check_stocks():
@@ -71,7 +71,7 @@ async def check_stocks():
 def reset_daily_alerts():
     alerted_today.clear()
 
-if __name__ == "__main__":
+async def main():
     last_reset_day = None
     print("✅ Stock bot running")
 
@@ -82,5 +82,8 @@ if __name__ == "__main__":
             reset_daily_alerts()
             last_reset_day = today
 
-        asyncio.run(check_stocks())
-        time.sleep(CHECK_EVERY_SECONDS)
+        await check_stocks()
+        await asyncio.sleep(CHECK_EVERY_SECONDS)
+
+if __name__ == "__main__":
+    asyncio.run(main())
