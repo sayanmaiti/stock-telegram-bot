@@ -3,11 +3,51 @@ import yfinance as yf
 from telegram import Bot
 
 # ===== CONFIG =====
-BOT_TOKEN = "7563850022:AAH8eNLig8UhuCo0AlwNifRe32k6VUqyKAo"
-CHAT_ID = "YOUR_CHAT_ID_HERE"
+BOT_TOKEN = "7563850022:AAFS1vmFNcE6Eeqd93I9zA1t6z59DmBJOfY"
+CHAT_ID = "6654008816"
 
-STOCKS = ["AAPL", "TSLA", "MSFT"]   # stocks you own
-DROP_LIMIT = -5.0                  # alert if down 5% or more
+STOCKS = [
+  "PLTR",
+  "LMT",
+  "BAESY",
+  "DRS",
+  "SNAP",
+  "ASML",
+  "IOSGY",
+  "UPS",
+  "TSLA",
+  "NU",
+  "PYPL",
+  "AAPL",
+  "SCCO",
+  "MSFT",
+  "PDD",
+  "SOFI",
+  "MCHI",
+  "LLY",
+  "VST",
+  "NVO",
+  "BRK-B",
+  "META",
+  "ORCL",
+  "RKLB",
+  "NVDA",
+  "GRAB",
+  "LYFT",
+  "AMD",
+  "AVGO",
+  "TTD",
+  "NFLX",
+  "GOOGL",
+  "UBER",
+  "MELI",
+  "TSM",
+  "SIX",
+  "AMZN",
+  "PG"
+]
+  # stocks you own
+DROP_LIMIT = -1.0                  # alert if down 5% or more
 CHECK_EVERY_SECONDS = 600           # 10 minutes
 # ==================
 
