@@ -4,8 +4,8 @@ import yfinance as yf
 from telegram import Bot
 
 # ===== CONFIG =====
-BOT_TOKEN = "YOUR_BOT_TOKEN"
-CHAT_ID = "YOUR_CHAT_ID"
+BOT_TOKEN = "7563850022:AAFS1vmFNcE6Eeqd93I9zA1t6z59DmBJOfY"
+CHAT_ID = "6654008816"
 
 STOCKS = [
     "PLTR", "LMT", "BAESY", "DRS", "SNAP", "ASML", "IOSGY", "UPS",
