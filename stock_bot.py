@@ -47,8 +47,8 @@ STOCKS = [
   "PG"
 ]
   # stocks you own
-DROP_LIMIT = -1.0                  # alert if down 5% or more
-CHECK_EVERY_SECONDS = 600           # 10 minutes
+DROP_LIMIT = -1.0                  # alert if down 1% or more
+CHECK_EVERY_SECONDS = 30           # 30 seconds
 # ==================
 
 bot = Bot(token=BOT_TOKEN)
