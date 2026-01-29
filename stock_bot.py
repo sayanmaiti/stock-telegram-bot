@@ -15,7 +15,7 @@ STOCKS = [
     "GOOGL", "UBER", "MELI", "TSM", "SIX2.DE", "AMZN", "PG"
 ]
 
-DROP_LIMIT = -2.0            # alert if down 2% or more
+DROP_LIMIT = -2.0            # alert if down 1% or more
 CHECK_EVERY_SECONDS = 60
 # ==================
 
@@ -28,13 +28,18 @@ async def check_stocks():
 
     for symbol in STOCKS:
         try:
-            data = yf.Ticker(symbol).history(period="1d")
+            ticker = yf.Ticker(symbol)
+            data = ticker.history(period="1d")
             if data.empty:
                 continue
 
+            # prices
             open_price = data["Open"].iloc[0]
             current_price = data["Close"].iloc[-1]
             change_pct = (current_price - open_price) / open_price * 100
+
+            # company name (fallback to ticker)
+            company_name = ticker.info.get("shortName", symbol)
 
             if change_pct <= DROP_LIMIT and symbol not in alerted_today:
 
@@ -49,7 +54,7 @@ async def check_stocks():
                 await bot.send_message(
                     chat_id=CHAT_ID,
                     text=(
-                        f"🚨 {symbol} down {change_pct:.2f}%\n"
+                        f"🚨 {company_name} down {change_pct:.2f}%\n"
                         f"Price: {open_price:.2f} → {current_price:.2f}\n"
                         f"Time: {alert_time}"
                     )
