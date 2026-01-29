@@ -16,7 +16,7 @@ STOCKS = [
 ]
 
 ALERT_STEPS = [-2, -4, -6, -8, -10]
-CHECK_EVERY_SECONDS = 30
+CHECK_EVERY_SECONDS = 60
 # ==================
 
 bot = Bot(token=BOT_TOKEN)
